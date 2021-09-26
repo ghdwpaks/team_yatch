@@ -70,7 +70,7 @@ class setup_score :
         res.extend(setup_score.lower3(dice))
         res.extend([15,30,50])
 
-        print("setup_score setup_scores res :",res)
+        #print("setup_score setup_scores res :",res)
         return res
 
 
@@ -217,30 +217,33 @@ class check_able :
 def score_part(dice_res) :
     global points 
     insert_able_list =  check_able.check_able(dice_res)
-    print(insert_able_list)
-    print("score_part insert_able_list :",insert_able_list) 
-    prints = [  "Aces\t:{}점",
-                "Deuces\t:{}점",
-                "Threes\t:{}점",
-                "Fours\t:{}점",
-                "Fives\t:{}점",
-                "Sixes\t:{}점",
-                "Choice\t:{}점",
+    #print(insert_able_list)
+    #print("score_part insert_able_list :",insert_able_list) 
+    prints = [  "Aces\t\t:{}점",
+                "Deuces\t\t:{}점",
+                "Threes\t\t:{}점",
+                "Fours\t\t:{}점",
+                "Fives\t\t:{}점",
+                "Sixes\t\t:{}점",
+                "Choice\t\t:{}점",
                 "4_of_a_Kind\t:{}점",
                 "Full_House\t:{}점",
                 "Small_Straight\t:{}점",
                 "Large_Straight\t:{}점",
-                "Yacht\t:{}점"]
+                "Yacht\t\t:{}점"]
 
     scores = setup_score.setup_scores(dice_res)
-    print("score_part scores :",scores)
+    #print("score_part scores :",scores)
     
-    
+    '''
+
     for i in range(len(insert_able_list)) :
         if insert_able_list[i] == 1 :
             print(prints[i].format(scores[i]))
             
-            
+    '''
+    for i in range(len(insert_able_list)) :
+            print(prints[i].format(scores[i]))
 
 
     pass
