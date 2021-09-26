@@ -1,5 +1,5 @@
 import random
-
+import copy as c
 
 class roll_dice : 
     # 주사위 굴리는 파트
@@ -47,6 +47,7 @@ class roll_dice :
 class result_dice :
     #주사위 결과값 파트
     def Show_result(dice_result) :
+        print("ressult_dice show_result dice_result :",dice_result)
         dice_list = {}
         dice_list['1번 주사위'] = dice_result[0]
         dice_list['2번 주사위'] = dice_result[1]
@@ -54,9 +55,199 @@ class result_dice :
         dice_list['4번 주사위'] = dice_result[3]
         dice_list['5번 주사위'] = dice_result[4]
 
+
+
         return dice_list
 
+class setup_score :
+    def setup_scores(dice) :
+        #dice_res
+        res = []
+        for i in range(len(dice)) :
+            dice[i] = c.deepcopy(int(dice[i]))
+        
+        res.extend(setup_score.upper(dice))
+        res.extend(setup_score.lower3(dice))
+        res.extend([15,30,50])
+
+        print("setup_score setup_scores res :",res)
+        return res
+
+
+
+
+
+    def upper(dice) :
+        res = []
+        for j in range(1,7):
+            temp = 0
+            for i in range(len(dice)) :
+                if dice[i] == j :
+                    temp += j
+            res.append(temp)
+        return res
+
+    def lower3(dice) :
+        
+        res = []
+        for j in range(1,7):
+            temp = 0
+            for i in range(len(dice)) :
+                temp += dice[i]
+            res.append(temp)
+        return res
+        
+    
+
+    
+
+
+
+class check_able :
+
+    
+        
+
+    def check_able(dice) :
+        #dice = [2,3,4,4,5]
+        return  [1,1,1,1,1,1,1,check_able.check_4_of_a_kind(dice),check_able.check_full_house(dice),check_able.check_small_straight(dice),check_able.check_large_straight(dice),check_able.check_yacht(dice)]
+    
+    
+
+    def check_4_of_a_kind(dice) :
+        #print("check_4_of_a_kind dice :",dice)
+        for i in range(len(dice)) :
+            base_num = dice[i]
+            stack = 0
+            for j in range(len(dice)) :
+                if dice[j] == base_num :
+                    stack += 1
+            if stack >= 4 :
+                return 1
+        return 0
+                
+    def check_full_house(dice) :
+        suba = ""
+        canpass = False
+        for i in range(len(dice)) :
+            base_num = dice[i]
+            stack = 0
+            for j in range(len(dice)) :
+                if dice[j] == base_num :
+                    stack += 1
+                if stack >= 3 :
+                    suba = str(dice[i])
+                    canpass = True
+                    #print("suba :",suba)
+                    #print("canpass :",canpass)
+                    break
+            if canpass :
+                #print("canpass 1 :",canpass)
+                break
+        
+        if canpass :
+            for i in range(len(dice)) :
+                stack = 0
+                base_num = dice[i]
+                if str(base_num) == suba :
+                    continue
+                #print("str(base_num) :",str(base_num))
+                #print("suba :",suba)
+                for j in range(len(dice)) :
+                    if dice[j] == base_num :
+
+                        stack += 1
+                    if stack >= 2 :
+                        return 1
+        #print('last stack :',stack)
+        return 0
+
+    def check_small_straight(dice) :
+        dice = set(dice) 
+        dice = list(dice)
+        #print("check_small_straight dice :",dice)
+        base_num = 0
+        stack = 0
+        
+        base_num = c.deepcopy(dice[0])
+        for i in range(len(dice)) :
+            #print("base_num + i :",base_num + i)
+            #print("dice[i] :",dice[i])
+            if base_num + i == dice[i] :
+                stack += 1
+
+        #print("stack 1 :",stack)
+        if stack >= 4 :
+            return 1
+
+        return 0
+
+    def check_large_straight(dice) :
+        dice = c.deepcopy(dice)
+        dice = set(dice) 
+        dice = list(dice)
+        #print("check_small_straight dice :",dice)
+        base_num = 0
+        stack = 0
+        
+        base_num = c.deepcopy(dice[0])
+        for i in range(len(dice)) :
+            #print("base_num + i :",base_num + i)
+            #print("dice[i] :",dice[i])
+            if base_num + i == dice[i] :
+                stack += 1
+
+        #print("stack 1 :",stack)
+        if stack >= 5 :
+            return 1
+
+        return 0
+
+    def check_yacht(dice) :
+        for i in range(len(dice)) :
+            base_num = dice[i]
+            stack = 0
+            for j in range(len(dice)) :
+                if dice[j] == base_num :
+                    stack += 1
+            if stack >= 5 :
+                return 1
+        return 0
+
+def score_part(dice_res) :
+    global points 
+    insert_able_list =  check_able.check_able(dice_res)
+    print(insert_able_list)
+    print("score_part insert_able_list :",insert_able_list) 
+    prints = [  "Aces\t:{}점",
+                "Deuces\t:{}점",
+                "Threes\t:{}점",
+                "Fours\t:{}점",
+                "Fives\t:{}점",
+                "Sixes\t:{}점",
+                "Choice\t:{}점",
+                "4_of_a_Kind\t:{}점",
+                "Full_House\t:{}점",
+                "Small_Straight\t:{}점",
+                "Large_Straight\t:{}점",
+                "Yacht\t:{}점"]
+
+    scores = setup_score.setup_scores(dice_res)
+    print("score_part scores :",scores)
+    
+    
+    for i in range(len(insert_able_list)) :
+        if insert_able_list[i] == 1 :
+            print(prints[i].format(scores[i]))
+            
+            
+
+
+    pass
+
+
 # main
+points = [0,0,0,0,0,0,0,0,0,0,0,0]
 print("프로그램을 시작합니다.")
 
 print("1. 게임시작")
@@ -70,8 +261,7 @@ if input_start == "1" :
     query = input("값을 바꾸시겠어요? (Y/N)")
     if query == 'y' or query == 'Y' :
         roll_dice.Change_dice(query, dice_result)
-        show = result_dice.Show_result(dice_result)
-        print(show)
+        score_part(dice_result)
     elif query == 'n' or query == 'N' :
         pass
     else :
@@ -80,3 +270,12 @@ if input_start == "1" :
 elif input_start == "2" :
     #게임 설명 코드 추가 필요
     pass
+
+
+
+
+
+
+
+
+
