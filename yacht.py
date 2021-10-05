@@ -44,20 +44,17 @@ class roll_dice :
                 print("유효하지 않은 값 입니다 !!")
                 continue
 
-class result_dice :
-    #주사위 결과값 파트
-    def Show_result(dice_result) :
-        print("ressult_dice show_result dice_result :",dice_result)
-        dice_list = {}
-        dice_list['1번 주사위'] = dice_result[0]
-        dice_list['2번 주사위'] = dice_result[1]
-        dice_list['3번 주사위'] = dice_result[2]
-        dice_list['4번 주사위'] = dice_result[3]
-        dice_list['5번 주사위'] = dice_result[4]
+# class result_dice :
+#     #주사위 결과값 파트
+#     def Show_result(dice_result) :
+#         dice_list = {}
+#         dice_list['1번 주사위'] = dice_result[0]
+#         dice_list['2번 주사위'] = dice_result[1]
+#         dice_list['3번 주사위'] = dice_result[2]
+#         dice_list['4번 주사위'] = dice_result[3]
+#         dice_list['5번 주사위'] = dice_result[4]
 
-
-
-        return dice_list
+#         return dice_list
 
 class setup_score :
     def setup_scores(dice) :
@@ -219,7 +216,8 @@ def score_part(dice_res) :
     insert_able_list =  check_able.check_able(dice_res)
     #print(insert_able_list)
     #print("score_part insert_able_list :",insert_able_list) 
-    prints = [  "Aces\t\t:{}점",
+    prints = [  "========================\n"
+                "Aces\t\t:{}점",
                 "Deuces\t\t:{}점",
                 "Threes\t\t:{}점",
                 "Fours\t\t:{}점",
@@ -230,7 +228,8 @@ def score_part(dice_res) :
                 "Full_House\t:{}점",
                 "Small_Straight\t:{}점",
                 "Large_Straight\t:{}점",
-                "Yacht\t\t:{}점"]
+                "Yacht\t\t:{}점"
+                "\n========================"]
 
     scores = setup_score.setup_scores(dice_res)
     #print("score_part scores :",scores)
@@ -249,6 +248,10 @@ def score_part(dice_res) :
     pass
 
 
+
+
+
+
 # main
 points = [0,0,0,0,0,0,0,0,0,0,0,0]
 print("프로그램을 시작합니다.")
@@ -259,16 +262,47 @@ input_start = input("입력 : ")
 
 if input_start == "1" :
     #게임 시작 코드 추가 필요
-    dice_result = roll_dice.Random_dice()
-    print(dice_result)
-    query = input("값을 바꾸시겠어요? (Y/N)")
-    if query == 'y' or query == 'Y' :
-        roll_dice.Change_dice(query, dice_result)
-        score_part(dice_result)
-    elif query == 'n' or query == 'N' :
-        pass
-    else :
-        print("유효하지 않은 값입니다 !! ")
+    while(True) : 
+        player_list = []
+        player1_name = input("1번 플레이어의 이름 : ")
+        player_list.append(player1_name)
+        player2_name = input("2번 플레이어의 이름 : ")
+        player_list.append(player2_name)
+        if player2_name != '' and player1_name != '':
+            break
+        else :
+            print("플레이어의 이름을 입력해야만 합니다! (2인용)")
+    
+    print('\n' + '☆' * 16 + '\n' + "\t게임을  시작하지\t" + '\n' +'★' * 16 + '\n')
+
+    for turn in range (1,13) :
+        for player_turn in player_list :
+            print("12턴 중 " + str(turn) + "번째\n")
+            print(str(player_turn)+"의 차례!\n")
+            dice_result = roll_dice.Random_dice()
+            print("주사위 값 : " + str(dice_result))
+            score_part(dice_result)
+            count = 1
+            while(count < 3) :
+                query = input("값을 바꾸시겠어요? (Y/N)")
+                if query == 'y' or query == 'Y' :
+                    roll_dice.Change_dice(query, dice_result)
+                    print("주사위 값 : " + str(dice_result))
+                    score_part(dice_result)
+                    count+=1
+                elif query == 'n' or query == 'N' :
+                    break
+                else :
+                    print("유효하지 않은 값입니다 !! ")
+
+            print("=================================================================\n"
+                "1 = Aces\t 2 = Deuces\t 3 = Threes\t 4 = Fours\n"
+                "5 = Fives\t 6 = Sixes\t 7 = Choice\t 8 = 4_of_a_Kind\n"
+                "9 = Full_House\t 10 = Small_Straight\t 11 = Large_Straight\n"
+                "12 = Yacht"
+                "\n=================================================================")
+            
+            select_point = input("몇 번 값으로 선택하시겠어요 ? (1 ~ 12) : ")
 
 elif input_start == "2" :
     #게임 설명 코드 추가 필요
