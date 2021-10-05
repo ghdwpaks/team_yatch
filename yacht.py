@@ -1,5 +1,6 @@
 import random
 import copy as c
+import pandas as pd
 
 class roll_dice : 
     # 주사위 굴리는 파트
@@ -247,7 +248,13 @@ def score_part(dice_res) :
 
     pass
 
-
+class Score_board :
+    
+    def score(player_list) :
+        df = pd.DataFrame(columns=player_list, index=['Aces', 'Deuces', 'Threes', 'Fours', 'Fives', 'Sixes', 'Choice', '4_of_a_Kind'
+                                                      'Full_House', 'Small_Straight', 'Large_Straight', 'Yacht', 'Total_Score'])
+        df = df.fillna(0)
+        
 
 
 
@@ -277,12 +284,14 @@ if input_start == "1" :
 
     for turn in range (1,13) :
         for player_turn in player_list :
-            print("12턴 중 " + str(turn) + "번째\n")
+            print("\n12턴 중 " + str(turn) + "번째\n")
             print(str(player_turn)+"의 차례!\n")
+
             dice_result = roll_dice.Random_dice()
             print("주사위 값 : " + str(dice_result))
             score_part(dice_result)
             count = 1
+            
             while(count < 3) :
                 query = input("값을 바꾸시겠어요? (Y/N)")
                 if query == 'y' or query == 'Y' :
