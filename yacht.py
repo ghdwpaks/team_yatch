@@ -60,16 +60,17 @@ class roll_dice :
 
 class setup_score :
     def setup_scores(dice) :
+        #dice = [1,2,3,4,5]
         #dice_res
         res = []
         for i in range(len(dice)) :
             dice[i] = c.deepcopy(int(dice[i]))
-        
+        #print("setup_score setup_scores res 1:",res)
+        #upper는 Aces, Deuces,Threes,Fours,Fives,Sixes의 점수를 받아온다(총합점수)
+        #lower3는 Choice,4 of a Kind,Full House
         res.extend(setup_score.upper(dice))
         res.extend(setup_score.lower3(dice))
         res.extend([15,30,50])
-
-        #print("setup_score setup_scores res :",res)
         return res
 
 
@@ -89,7 +90,7 @@ class setup_score :
     def lower3(dice) :
         
         res = []
-        for j in range(1,7):
+        for j in range(1,4):
             temp = 0
             for i in range(len(dice)) :
                 temp += dice[i]
@@ -215,6 +216,7 @@ class check_able :
 
 def score_part(dice_res) :
     global points 
+    #dice_res = [1,2,3,4,5]
     insert_able_list =  check_able.check_able(dice_res)
     #print(insert_able_list)
     #print("score_part insert_able_list :",insert_able_list) 
@@ -235,17 +237,25 @@ def score_part(dice_res) :
 
     scores = setup_score.setup_scores(dice_res)
     #print("score_part scores :",scores)
+    #scores = [1, 2, 3, 8, 0, 0, 14, 14, 14, 15, 30, 50]
+    for i in range(len(insert_able_list)) :
+        if insert_able_list[i] == 0 :
+            scores[i] = 0
+    #print("score_part scores :",scores)
+    #insert_able_list에서 판별된 '불가능한 것들'은 socres 리스트에서도 0점이 됨.
+    #score_part scores : [1, 2, 3, 4, 5, 0, 15, 0, 0, 15, 30, 0]
     
     '''
-
     for i in range(len(insert_able_list)) :
         if insert_able_list[i] == 1 :
             print(prints[i].format(scores[i]))
+    '''
             
     '''
     for i in range(len(insert_able_list)) :
             print(prints[i].format(scores[i]))
-
+    '''
+    return scores
 
     pass
 
@@ -305,7 +315,14 @@ if input_start == "1" :
                     break
                 else :
                     print("유효하지 않은 값입니다 !! ")
+            print("\n\n")
+            
 
+
+            print("\n\n")
+
+            score = score_part(dice_result)
+            print("main score :",score)
             print("=================================================================\n"
                 "1 = Aces\t 2 = Deuces\t 3 = Threes\t 4 = Fours\n"
                 "5 = Fives\t 6 = Sixes\t 7 = Choice\t 8 = 4_of_a_Kind\n"
